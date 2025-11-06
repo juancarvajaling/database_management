@@ -16,9 +16,6 @@ obj/
 *.dbmdl
 *.sqlcmdvars
 
-# Visual Studio settings
-.vs/
-
 # User-specific files
 *.user
 *.suo
@@ -28,4 +25,151 @@ obj/
 # Backup files
 *.bak
 *.log
+
+# =============================================================================
+# Database Files & Backups
+# =============================================================================
+
+# Database backups and dumps
+*.sql.backup
+*.dump
+*.sql.gz
+*.tar.gz
+
+# SQLite databases (if used for local testing)
+*.sqlite
+*.sqlite3
+*.db
+
+# PostgreSQL specific
+*.pgsql
+*.pgdump
+postgres.conf
+pg_hba.conf
+
+# MySQL/MariaDB specific
+*.mysql
+*.frm
+*.ibd
+*.MYD
+*.MYI
+
+# Database connection files (IMPORTANT: Keep credentials out of repo)
+.env
+.env.local
+.env.production
+.env.*.local
+*connection*.json
+*credentials*.json
+database.ini
+db_config.yml
+secrets.yml
+
+# Query results and exports
+query_results/
+exports/
+output/
+*.csv
+*.xlsx
+*.xls
+!data/sample*.csv
+temp_data/
+
+# =============================================================================
+# IDE & Editor Files
+# =============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# =============================================================================
+# Operating System Files
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# Performance & Testing Files
+# =============================================================================
+
+# Performance test results
+performance_results/
+benchmark_results/
+*.perf
+
+# Test data (keep sample/seed data, exclude large test datasets)
+test_data/large/
+test_dumps/
+
+# =============================================================================
+# Documentation Build Files
+# =============================================================================
+
+# Generated documentation
+docs/_build/
+docs/.doctrees/
+site/
+
+# =============================================================================
+# Temporary & Cache Files
+# =============================================================================
+
+# General temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+cache/
+
+# Lock files
+*.lock
+!package-lock.json
+
+# =============================================================================
+# Migration & Version Control
+# =============================================================================
+
+# Migration rollback files
+*_rollback_*.sql
+
+# Version control conflicts
+*.orig
 
