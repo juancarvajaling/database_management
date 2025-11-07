@@ -1,21 +1,85 @@
-# Quick Setup Guide - E-Commerce Analytics Database
+# Setup Guide - E-Commerce Analytics Database
 
-This guide will help you set up the database project for demonstration purposes.
+This guide explains how to set up and use the database project.
 
 ---
 
-## Prerequisites
+## 🐳 Docker Setup (Recommended)
 
-### 1. Install PostgreSQL
+**The easiest and fastest way to run this project!**
+
+### Why Docker?
+- ✅ No PostgreSQL installation required
+- ✅ Works on all platforms (macOS, Linux, Windows)
+- ✅ Setup in under 3 minutes
+- ✅ Includes pgAdmin web interface
+- ✅ Easy cleanup
+
+### Quick Start
+
+```bash
+cd /path/to/data_storages
+
+# Start everything
+docker-compose up -d
+
+# Wait ~30 seconds for initialization
+```
+
+**That's it! 🎉** Database is ready with all data loaded.
+
+### Access Methods
+
+**pgAdmin Web Interface (Recommended):**
+- URL: http://localhost:8080
+- Email: `admin@admin.com`
+- Password: `admin`
+
+**External SQL Client:**
+- Host: `localhost`
+- Port: `5432`
+- Database: `ecommerce_analytics`
+- Username: `postgres`
+- Password: `postgres`
+
+**Command Line:**
+```bash
+docker exec -it ecommerce_analytics_db psql -U postgres -d ecommerce_analytics
+```
+
+### Docker Commands
+
+```bash
+# Start containers
+docker-compose up -d
+
+# Stop containers (keeps data)
+docker-compose stop
+
+# Remove everything (fresh start)
+docker-compose down -v
+
+# View logs
+docker-compose logs -f postgres
+
+# Check status
+docker-compose ps
+```
+
+---
+
+## Alternative: Manual PostgreSQL Installation
+
+If you prefer installing PostgreSQL directly on your system:
+
+### Prerequisites
+
+#### 1. Install PostgreSQL 15+
 
 **macOS:**
 ```bash
-# Using Homebrew
 brew install postgresql@15
 brew services start postgresql@15
-
-# Verify installation
-psql --version
 ```
 
 **Linux (Ubuntu/Debian):**
@@ -27,373 +91,378 @@ sudo systemctl enable postgresql
 ```
 
 **Windows:**
-- Download installer from https://www.postgresql.org/download/windows/
+- Download from https://www.postgresql.org/download/windows/
 - Run installer and follow setup wizard
 - Add PostgreSQL bin directory to PATH
 
-### 2. Verify PostgreSQL is Running
+#### 2. Verify Installation
 
 ```bash
-# Check if PostgreSQL is running
+psql --version
 psql -U postgres -c "SELECT version();"
 ```
 
----
+### Database Setup
 
-## Quick Start (5 Minutes)
-
-### Step 1: Create the Database
+#### Step 1: Create Database and Setup
 
 ```bash
-cd /Users/juan.sanchez/Documents/company/peex/evidences/data_storages
+cd /path/to/data_storages
 
-# Create database and basic structure
-psql -U postgres -f schema/00_create_database.sql
+# Create database with schemas and extensions
+psql -U postgres -f schema/01_setup_database.sql
 ```
 
-### Step 2: Create Tables and Objects
+#### Step 2: Create Tables
 
 ```bash
-# Create all tables
-psql -U postgres -d ecommerce_analytics -f schema/01_create_tables.sql
-
-# Create indexes
-psql -U postgres -d ecommerce_analytics -f schema/02_create_indexes.sql
-
-# Create views
-psql -U postgres -d ecommerce_analytics -f schema/03_create_views.sql
-
-# Create functions
-psql -U postgres -d ecommerce_analytics -f schema/04_create_functions.sql
+psql -U postgres -d ecommerce_analytics -f schema/02_create_tables.sql
 ```
 
-### Step 3: Load Sample Data
+#### Step 3: Create Indexes
 
 ```bash
-# Insert sample data
+psql -U postgres -d ecommerce_analytics -f schema/03_create_indexes.sql
+```
+
+#### Step 4: Create Views
+
+```bash
+psql -U postgres -d ecommerce_analytics -f schema/04_create_views.sql
+```
+
+#### Step 5: Create Functions
+
+```bash
+psql -U postgres -d ecommerce_analytics -f schema/05_create_functions.sql
+```
+
+#### Step 6: Load Sample Data
+
+```bash
 psql -U postgres -d ecommerce_analytics -f data/insert_sample_data.sql
 ```
 
-### Step 4: Verify Installation
+#### Step 7: Create Materialized Views (Optional)
+
+```bash
+psql -U postgres -d ecommerce_analytics -f optimizations/create_materialized_views.sql
+```
+
+### Verify Installation
 
 ```bash
 # Connect to database
 psql -U postgres -d ecommerce_analytics
 
-# Run verification queries
-\dt              -- List all tables
-\di              -- List all indexes
-\dv              -- List all views
+# Check tables
+\dt
+
+# Check data
 SELECT COUNT(*) FROM customers;
 SELECT COUNT(*) FROM orders;
 SELECT COUNT(*) FROM products;
+
+# Exit
+\q
 ```
 
 ---
 
-## Full Setup (15 Minutes) - Including All Features
+## 📊 Using the Database
 
-### Create All Database Objects
+### With pgAdmin (Docker or Desktop)
+
+1. **Open pgAdmin**: http://localhost:8080 (Docker) or pgAdmin Desktop
+2. **Connect to Server**:
+   - Host: `localhost` (or `postgres` if in Docker network)
+   - Port: `5432`
+   - Database: `ecommerce_analytics`
+   - Username: `postgres`
+   - Password: `postgres`
+3. **Navigate**: Servers → Database → Schemas → public → Tables
+4. **Run Queries**: Right-click database → Query Tool
+
+### With Command Line (psql)
 
 ```bash
-cd /Users/juan.sanchez/Documents/company/peex/evidences/data_storages
+# Connect
+psql -U postgres -d ecommerce_analytics
 
-# Execute all schema files
-for file in schema/*.sql; do
-    echo "Executing $file..."
-    psql -U postgres -d ecommerce_analytics -f "$file"
-done
-
-# Load data
-psql -U postgres -d ecommerce_analytics -f data/insert_sample_data.sql
-
-# Create materialized views
-psql -U postgres -d ecommerce_analytics -f optimizations/materialized_views.sql
-
-# Create partitioned tables (optional - for demonstration)
-psql -U postgres -d ecommerce_analytics -f optimizations/partitioning.sql
+# Common commands
+\dt              -- List tables
+\di              -- List indexes
+\dv              -- List views
+\df              -- List functions
+\d table_name    -- Describe table
+\q               -- Quit
 ```
 
----
+### Running Example Queries
 
-## Demonstration Scenarios
+**Option 1: In pgAdmin**
+- Open Query Tool
+- Click Open File (📁)
+- Select file from `queries/` folder
+- Execute (⚡ or F5)
 
-### Scenario 1: Data Selection Queries (5 minutes)
+**Option 2: From Command Line**
 ```bash
 psql -U postgres -d ecommerce_analytics -f queries/01_data_selection/basic_queries.sql
 ```
-**Demonstrates:** Basic SELECT statements, WHERE clauses, filtering, pattern matching
-
-### Scenario 2: Ordering and Grouping (5 minutes)
-```bash
-psql -U postgres -d ecommerce_analytics -f queries/03_ordering_grouping/aggregate_queries.sql
-```
-**Demonstrates:** GROUP BY, ORDER BY, aggregate functions, window functions
-
-### Scenario 3: Complex Queries (10 minutes)
-```bash
-psql -U postgres -d ecommerce_analytics -f queries/04_query_optimization/complex_queries.sql
-```
-**Demonstrates:** JOINs, subqueries, CTEs, UNION operations
-
-### Scenario 4: Database Object Management (5 minutes)
-```bash
-psql -U postgres -d ecommerce_analytics -f queries/02_database_objects/ddl_examples.sql
-```
-**Demonstrates:** CREATE, ALTER, DROP statements for various objects
-
-### Scenario 5: Transactions (10 minutes)
-```bash
-psql -U postgres -d ecommerce_analytics -f transactions/transaction_examples.sql
-```
-**Demonstrates:** BEGIN/COMMIT/ROLLBACK, ACID properties, isolation levels
-
-### Scenario 6: Performance Optimization (15 minutes)
-```bash
-# Indexing strategies
-psql -U postgres -d ecommerce_analytics -f optimizations/indexing_strategy.sql
-
-# Partitioning
-psql -U postgres -d ecommerce_analytics -f optimizations/partitioning.sql
-
-# Materialized views
-psql -U postgres -d ecommerce_analytics -f optimizations/materialized_views.sql
-```
-**Demonstrates:** Various optimization techniques
-
-### Scenario 7: Query Performance Analysis (10 minutes)
-```bash
-psql -U postgres -d ecommerce_analytics -f performance/query_analysis.sql
-psql -U postgres -d ecommerce_analytics -f performance/optimization_comparisons.sql
-```
-**Demonstrates:** EXPLAIN ANALYZE, performance tuning
 
 ---
 
-## Interactive Demo Script
+## 🎯 Demo Scenarios
 
-Use this script for a live demonstration:
+### Scenario 1: Data Selection Queries
+**File**: `queries/01_data_selection/basic_queries.sql`  
+**Demonstrates**: Basic SELECT, WHERE, filtering, pattern matching
+
+### Scenario 2: Ordering and Grouping
+**File**: `queries/03_ordering_grouping/aggregate_queries.sql`  
+**Demonstrates**: GROUP BY, ORDER BY, aggregate functions, window functions
+
+### Scenario 3: Complex Queries
+**File**: `queries/04_query_optimization/complex_queries.sql`  
+**Demonstrates**: JOINs, subqueries, CTEs, UNION operations
+
+### Scenario 4: Database Object Management
+**File**: `queries/02_database_objects/ddl_examples.sql`  
+**Demonstrates**: CREATE, ALTER, DROP statements
+
+### Scenario 5: Transactions
+**File**: `transactions/transaction_examples.sql`  
+**Demonstrates**: BEGIN/COMMIT/ROLLBACK, ACID properties, isolation levels
+
+### Scenario 6: Performance Optimization
+**Files**: 
+- `optimizations/indexing_strategy.sql`
+- `optimizations/partitioning.sql`
+- `optimizations/create_materialized_views.sql`
+
+**Demonstrates**: Indexing strategies, partitioning, materialized views
+
+### Scenario 7: Query Performance Analysis
+**Files**:
+- `performance/query_analysis.sql`
+- `performance/optimization_comparisons.sql`
+
+**Demonstrates**: EXPLAIN ANALYZE, performance tuning
+
+---
+
+## 📚 Example Queries
+
+### Simple Queries
 
 ```sql
--- Connect to database
-\c ecommerce_analytics
+-- View all customers
+SELECT * FROM customers LIMIT 10;
 
--- 1. Show database structure
-\dt+
+-- Find gold tier customers
+SELECT * FROM customers WHERE customer_tier = 'GOLD';
 
--- 2. Simple data selection
-SELECT * FROM customers LIMIT 5;
+-- Products over $500
+SELECT * FROM products WHERE unit_price > 500 ORDER BY unit_price DESC;
+```
 
--- 3. Complex analytics query
+### Analytics Queries
+
+```sql
+-- Customer lifetime value
 SELECT 
-    c.customer_tier,
-    COUNT(DISTINCT c.customer_id) as customers,
-    COUNT(DISTINCT o.order_id) as orders,
-    ROUND(AVG(o.total_amount), 2) as avg_order_value,
-    SUM(o.total_amount) as total_revenue
-FROM customers c
-LEFT JOIN orders o ON c.customer_id = o.customer_id
-WHERE o.order_status NOT IN ('CANCELLED', 'REFUNDED')
-GROUP BY c.customer_tier
-ORDER BY total_revenue DESC;
+    customer_tier,
+    COUNT(*) as customers,
+    ROUND(AVG(lifetime_value), 2) as avg_lifetime_value
+FROM v_customer_summary
+GROUP BY customer_tier
+ORDER BY avg_lifetime_value DESC;
 
--- 4. Use a pre-built view
-SELECT * FROM v_customer_summary LIMIT 5;
-
--- 5. Use materialized view for fast analytics
+-- Top selling products
 SELECT * FROM mv_product_performance 
 ORDER BY total_revenue DESC 
 LIMIT 10;
 
--- 6. Show query optimization with EXPLAIN
-EXPLAIN ANALYZE
-SELECT p.product_name, COUNT(oi.order_id) as times_ordered
-FROM products p
-LEFT JOIN order_items oi ON p.product_id = oi.product_id
-GROUP BY p.product_id, p.product_name
-ORDER BY times_ordered DESC
-LIMIT 10;
+-- Daily sales trend
+SELECT * FROM mv_daily_sales 
+ORDER BY sale_date DESC 
+LIMIT 30;
+```
 
--- 7. Transaction example
-BEGIN;
-INSERT INTO customers (email, first_name, last_name, customer_tier)
-VALUES ('demo@example.com', 'Demo', 'User', 'BRONZE');
-SELECT * FROM customers WHERE email = 'demo@example.com';
-ROLLBACK;
--- Verify rollback
-SELECT * FROM customers WHERE email = 'demo@example.com';
+### Complex Queries
+
+```sql
+-- Customer order analysis
+SELECT 
+    c.first_name || ' ' || c.last_name as customer,
+    COUNT(o.order_id) as order_count,
+    SUM(o.total_amount) as total_spent,
+    AVG(o.total_amount) as avg_order_value
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_status = 'DELIVERED'
+GROUP BY c.customer_id, c.first_name, c.last_name
+HAVING SUM(o.total_amount) > 1000
+ORDER BY total_spent DESC;
 ```
 
 ---
 
-## Presentation Tips
+## 🔧 Maintenance
 
-### For Performance Evaluation
+### Update Statistics
 
-1. **Start with Documentation**
-   - Show README.md for project overview
-   - Walk through ER diagram in documentation/er_diagram.md
-   - Reference data dictionary for detailed specifications
+```sql
+ANALYZE customers;
+ANALYZE orders;
+ANALYZE products;
+```
 
-2. **Demonstrate Each Competency**
-   
-   **Data Selection:**
-   ```bash
-   psql -d ecommerce_analytics -f queries/01_data_selection/basic_queries.sql | less
-   ```
-   
-   **Creating/Modifying Objects:**
-   ```bash
-   psql -d ecommerce_analytics -f queries/02_database_objects/ddl_examples.sql | less
-   ```
-   
-   **Ordering/Grouping:**
-   ```bash
-   psql -d ecommerce_analytics -f queries/03_ordering_grouping/aggregate_queries.sql | less
-   ```
-   
-   **Query Optimization:**
-   ```bash
-   psql -d ecommerce_analytics -f queries/04_query_optimization/complex_queries.sql | less
-   ```
-   
-   **Transactions:**
-   ```bash
-   psql -d ecommerce_analytics -f transactions/transaction_examples.sql | less
-   ```
-   
-   **Database Optimization:**
-   ```bash
-   psql -d ecommerce_analytics -f optimizations/indexing_strategy.sql | less
-   psql -d ecommerce_analytics -f optimizations/partitioning.sql | less
-   ```
-   
-   **Documentation:**
-   - Open documentation/er_diagram.md
-   - Open documentation/data_dictionary.md
-   - Open documentation/schema_overview.md
-   
-   **Performance Analysis:**
-   ```bash
-   psql -d ecommerce_analytics -f performance/query_analysis.sql | less
-   psql -d ecommerce_analytics -f performance/optimization_comparisons.sql | less
-   ```
+### Refresh Materialized Views
 
-3. **Highlight Key Features**
-   - Show the comprehensive schema design (3NF normalization)
-   - Demonstrate complex queries with JOINs and CTEs
-   - Show EXPLAIN ANALYZE for query optimization
-   - Demonstrate transaction isolation levels
-   - Show materialized views for performance
-   - Display the detailed documentation
+```sql
+REFRESH MATERIALIZED VIEW CONCURRENTLY mv_customer_analytics;
+REFRESH MATERIALIZED VIEW CONCURRENTLY mv_product_performance;
+REFRESH MATERIALIZED VIEW CONCURRENTLY mv_daily_sales;
+```
+
+### Vacuum Database
+
+```sql
+VACUUM ANALYZE;
+```
+
+### Check Database Size
+
+```sql
+SELECT pg_size_pretty(pg_database_size('ecommerce_analytics'));
+```
 
 ---
 
-## Competency Mapping
+## 🐛 Troubleshooting
 
-| Competency | Demonstrated In | Key Files |
-|------------|-----------------|-----------|
-| Selects data using query language | Data selection queries with filters, joins, subqueries | queries/01_data_selection/basic_queries.sql |
-| Creates and modifies database objects | DDL statements for tables, indexes, views, functions | schema/*.sql, queries/02_database_objects/ |
-| Orders and groups data | ORDER BY, GROUP BY, aggregates, window functions | queries/03_ordering_grouping/ |
-| Combines queries to optimize | JOINs, subqueries, CTEs, UNION | queries/04_query_optimization/ |
-| Implements database structure | Complete schema with constraints, indexes | schema/01_create_tables.sql |
-| Wraps queries in transactions | BEGIN/COMMIT/ROLLBACK, isolation levels | transactions/transaction_examples.sql |
-| Applies optimization techniques | Indexes, partitioning, materialized views | optimizations/ |
-| Documents database | ER diagrams, data dictionary, schema docs | documentation/ |
-| Optimizes query performance | EXPLAIN ANALYZE, query rewriting | performance/ |
+### Docker Issues
 
----
-
-## Troubleshooting
-
-### Issue: Connection refused
-**Solution:** Ensure PostgreSQL is running
+**Port already in use:**
 ```bash
-# macOS
-brew services start postgresql@15
+# Stop local PostgreSQL
+brew services stop postgresql
 
-# Linux
-sudo systemctl start postgresql
-
-# Check status
-pg_isready
+# Or change port in docker-compose.yml
 ```
 
-### Issue: Permission denied
-**Solution:** Use superuser or grant permissions
+**Container won't start:**
+```bash
+docker-compose logs postgres
+docker-compose down -v
+docker-compose up -d
+```
+
+### Manual Installation Issues
+
+**Cannot connect:**
+```bash
+# Check if PostgreSQL is running
+pg_isready
+
+# Start PostgreSQL
+brew services start postgresql  # macOS
+sudo systemctl start postgresql # Linux
+```
+
+**Permission denied:**
 ```bash
 # Connect as superuser
 psql -U postgres
 
-# Or grant permissions
+# Grant permissions
 GRANT ALL PRIVILEGES ON DATABASE ecommerce_analytics TO your_user;
 ```
 
-### Issue: Database already exists
-**Solution:** Drop and recreate
+**Database already exists:**
 ```bash
+# Drop and recreate
 psql -U postgres -c "DROP DATABASE IF EXISTS ecommerce_analytics;"
-psql -U postgres -f schema/00_create_database.sql
+psql -U postgres -f schema/01_setup_database.sql
 ```
 
-### Issue: Tables already exist
-**Solution:** Clear database
+---
+
+## 🔄 Reset Database
+
+### Docker
 ```bash
-psql -U postgres -d ecommerce_analytics -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+docker-compose down -v
+docker-compose up -d
 ```
 
----
-
-## Clean Up
-
-To remove the entire database:
+### Manual Installation
 ```bash
-psql -U postgres -c "DROP DATABASE IF EXISTS ecommerce_analytics;"
+# Drop database
+psql -U postgres -c "DROP DATABASE IF EXISTS ecommerce_analytics CASCADE;"
+
+# Recreate
+psql -U postgres -f schema/01_setup_database.sql
+psql -U postgres -d ecommerce_analytics -f schema/02_create_tables.sql
+# ... continue with other schema files
+psql -U postgres -d ecommerce_analytics -f data/insert_sample_data.sql
 ```
 
 ---
 
-## Next Steps
+## 📖 Documentation
 
-1. **Review Documentation**: Start with README.md and documentation/
-2. **Run Setup**: Follow Quick Start above
-3. **Explore Queries**: Run through demonstration scenarios
-4. **Practice**: Modify queries to test your understanding
-5. **Present**: Use the demo script for your evaluation
-
----
-
-## Support Files
-
-- **README.md** - Project overview and structure
-- **documentation/** - Complete database documentation
-- **schema/** - Database creation scripts
-- **queries/** - Query examples for each competency
-- **transactions/** - Transaction management examples
-- **optimizations/** - Performance optimization techniques
-- **performance/** - Query analysis and tuning
+- **[README.md](./README.md)** - Project overview
+- **[DOCKER_SETUP.md](./DOCKER_SETUP.md)** - Complete Docker guide
+- **[documentation/er_diagram.md](./documentation/er_diagram.md)** - ER diagram
+- **[documentation/data_dictionary.md](./documentation/data_dictionary.md)** - Data dictionary
+- **[documentation/schema_overview.md](./documentation/schema_overview.md)** - Architecture
 
 ---
 
-## Evaluation Checklist
+## ✅ Verification Checklist
 
 - [ ] Database successfully created
-- [ ] All tables, indexes, and objects created
-- [ ] Sample data loaded
-- [ ] Can demonstrate data selection queries
-- [ ] Can show CREATE/ALTER/DROP operations
-- [ ] Can demonstrate ORDER BY and GROUP BY
-- [ ] Can show complex JOINs and subqueries
+- [ ] All tables created (12 tables)
+- [ ] All indexes created (60+ indexes)
+- [ ] All views created (9 views)
+- [ ] Materialized views created (7 MVs)
+- [ ] Sample data loaded (10 customers, 20 products, 10 orders)
+- [ ] Can run SELECT queries successfully
+- [ ] Can demonstrate CREATE/ALTER/DROP operations
+- [ ] Can show ORDER BY and GROUP BY examples
+- [ ] Can execute complex JOINs and subqueries
 - [ ] Can demonstrate transactions with ACID properties
-- [ ] Can show optimization techniques (indexes, partitioning)
-- [ ] Have complete documentation (ER diagram, data dictionary)
-- [ ] Can demonstrate EXPLAIN ANALYZE for performance analysis
+- [ ] Can show optimization techniques
+- [ ] Complete documentation available
+- [ ] Can demonstrate EXPLAIN ANALYZE
+
+---
+
+## 🎓 For Performance Evaluation
+
+**Recommended Approach: Docker + pgAdmin**
+
+1. **Setup** (30 seconds):
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Access pgAdmin**: http://localhost:8080
+
+3. **Demonstrate competencies** using pgAdmin Query Tool
+
+4. **Show documentation** in `documentation/` folder
+
+5. **Cleanup**:
+   ```bash
+   docker-compose down
+   ```
 
 ---
 
 **Good luck with your performance evaluation!**
 
 This project comprehensively demonstrates all required database storage competencies through practical, real-world examples.
-
-

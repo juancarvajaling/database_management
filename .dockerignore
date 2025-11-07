@@ -1,0 +1,76 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Docker files (except what we need)
+.dockerignore
+docker-compose.override.yml
+
+# Documentation (large files)
+*.md
+!README.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+.DS_Store
+._*
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Cache
+__pycache__/
+*.pyc
+.cache/
+.pytest_cache/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Coverage reports
+.coverage
+htmlcov/
+coverage/
+
+# Database files (if any local copies)
+*.db
+*.sqlite
+*.sqlite3
+
+# Large binary files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+

@@ -148,8 +148,9 @@ CREATE INDEX idx_promotions_active ON promotions(start_date, end_date)
     WHERE is_active = TRUE;
 
 -- Index for promotion expiry monitoring
+-- Note: Can't use CURRENT_TIMESTAMP in index predicate (not IMMUTABLE)
 CREATE INDEX idx_promotions_expiry ON promotions(end_date) 
-    WHERE is_active = TRUE AND end_date > CURRENT_TIMESTAMP;
+    WHERE is_active = TRUE;
 
 -- ============================================================================
 -- PRODUCT CATEGORIES TABLE INDEXES

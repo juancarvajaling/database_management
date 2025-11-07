@@ -1,0 +1,16 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "E-Commerce Analytics DB",
+      "Group": "Local Databases",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "ecommerce_analytics",
+      "Username": "postgres",
+      "Password": "postgres",
+      "SSLMode": "prefer",
+      "Comment": "E-Commerce Analytics Database for Performance Evaluation"
+    }
+  }
+}
+

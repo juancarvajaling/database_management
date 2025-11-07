@@ -1,10 +1,7 @@
 # E-Commerce Analytics Database Project
 
 ## Project Overview
-This project demonstrates comprehensive database management skills through a realistic e-commerce analytics platform. The database tracks customers, products, orders, inventory, and sales analytics.
-
-## Database System
-**PostgreSQL 15+** (can be adapted for MySQL/SQL Server)
+This project demonstrates comprehensive database management skills through a realistic e-commerce analytics platform. The database tracks customers, products, orders, inventory, and sales analytics using PostgreSQL 15.
 
 ## Key Competencies Demonstrated
 
@@ -36,10 +33,10 @@ This project demonstrates comprehensive database management skills through a rea
 - Examples in: `queries/04_query_optimization/`
 
 ### 5. Database Structure Implementation
-- Complete schema design with normalization
+- Complete schema design with normalization (3NF)
 - Migration scripts for version control
 - Database initialization and setup
-- Examples in: `schema/migrations/`
+- Examples in: `schema/`
 
 ### 6. Transaction Management
 - ACID property demonstrations
@@ -72,114 +69,212 @@ This project demonstrates comprehensive database management skills through a rea
 ## Project Structure
 ```
 data_storages/
-├── README.md
-├── schema/
-│   ├── 00_create_database.sql
-│   ├── 01_create_tables.sql
-│   ├── 02_create_indexes.sql
-│   ├── 03_create_views.sql
-│   ├── 04_create_functions.sql
-│   └── migrations/
+├── README.md                          # This file
+├── DOCKER_SETUP.md                    # Docker setup guide
+├── docker-compose.yml                 # Docker orchestration
+├── Dockerfile                         # PostgreSQL container definition
+├── schema/                            # Database schema
+│   ├── 01_setup_database.sql         # Database, schemas, and extensions
+│   ├── 02_create_tables.sql          # Table definitions
+│   ├── 03_create_indexes.sql         # Index definitions
+│   ├── 04_create_views.sql           # View definitions
+│   └── 05_create_functions.sql       # Functions and triggers
 ├── data/
-│   └── insert_sample_data.sql
+│   └── insert_sample_data.sql        # Sample data
 ├── queries/
-│   ├── 01_data_selection/
-│   ├── 02_database_objects/
-│   ├── 03_ordering_grouping/
-│   └── 04_query_optimization/
+│   ├── 01_data_selection/            # SELECT query examples
+│   ├── 02_database_objects/          # DDL examples
+│   ├── 03_ordering_grouping/         # Aggregation examples
+│   └── 04_query_optimization/        # Complex query examples
 ├── transactions/
-│   └── transaction_examples.sql
+│   └── transaction_examples.sql      # Transaction management examples
 ├── optimizations/
-│   ├── indexing_strategy.sql
-│   ├── partitioning.sql
-│   └── materialized_views.sql
+│   ├── indexing_strategy.sql         # Indexing techniques
+│   ├── partitioning.sql              # Table partitioning
+│   └── create_materialized_views.sql # Materialized views
 ├── performance/
-│   ├── query_analysis.sql
-│   └── optimization_comparisons.sql
+│   ├── query_analysis.sql            # EXPLAIN examples
+│   └── optimization_comparisons.sql  # Before/after optimization
 └── documentation/
-    ├── er_diagram.md
-    ├── data_dictionary.md
-    └── schema_overview.md
+    ├── er_diagram.md                 # ER diagram and relationships
+    ├── data_dictionary.md            # Complete data dictionary
+    └── schema_overview.md            # Architecture documentation
 ```
 
-## Setup Instructions
+## 🚀 Quick Start with Docker
 
-### 1. Install PostgreSQL
+### Prerequisites
+- Docker Desktop installed ([download here](https://www.docker.com/products/docker-desktop))
+
+### Start the Database
+
 ```bash
-# macOS
-brew install postgresql@15
+# Navigate to project directory
+cd /path/to/data_storages
 
-# Start PostgreSQL
-brew services start postgresql@15
+# Start PostgreSQL and pgAdmin
+docker-compose up -d
+
+# Wait ~30 seconds for initialization
 ```
 
-### 2. Create Database
+That's it! The database will be automatically created with all tables, indexes, views, and sample data.
+
+### Access the Database
+
+**🌐 pgAdmin (Recommended)**
+1. Open browser: http://localhost:8080
+2. Login:
+   - Email: `admin@admin.com`
+   - Password: `admin`
+3. Server is pre-configured and connected!
+
+**Connection Details** (for other SQL clients):
+- Host: `localhost`
+- Port: `5432`
+- Database: `ecommerce_analytics`
+- Username: `postgres`
+- Password: `postgres`
+
+## 📊 Using pgAdmin
+
+### Explore the Database
+
+1. **View Tables**: 
+   - Servers → E-Commerce Analytics DB → Databases → ecommerce_analytics → Schemas → public → Tables
+
+2. **Run Queries**:
+   - Right-click on `ecommerce_analytics` → Query Tool
+   - Copy queries from `queries/` folder
+
+3. **View ER Diagram**:
+   - Right-click on `ecommerce_analytics` → ERD For Database
+
+4. **Check Data**:
+   - Right-click on any table → View/Edit Data → All Rows
+
+### Example Queries to Try
+
+**Simple data selection:**
+```sql
+SELECT * FROM customers LIMIT 5;
+SELECT * FROM products WHERE unit_price > 100;
+```
+
+**Analytics query:**
+```sql
+SELECT 
+    c.customer_tier,
+    COUNT(*) as customer_count,
+    SUM(o.total_amount) as total_revenue
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_status = 'DELIVERED'
+GROUP BY c.customer_tier
+ORDER BY total_revenue DESC;
+```
+
+**Use a view:**
+```sql
+SELECT * FROM v_customer_summary ORDER BY lifetime_value DESC LIMIT 10;
+```
+
+**Performance analysis:**
+```sql
+EXPLAIN ANALYZE
+SELECT p.product_name, COUNT(oi.order_id) as times_ordered
+FROM products p
+LEFT JOIN order_items oi ON p.product_id = oi.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY times_ordered DESC;
+```
+
+## 📁 Query Examples
+
+All query examples are in the `queries/` folder. Open these files in pgAdmin's Query Tool:
+
+- **Data Selection**: `queries/01_data_selection/basic_queries.sql`
+- **Database Objects**: `queries/02_database_objects/ddl_examples.sql`
+- **Ordering & Grouping**: `queries/03_ordering_grouping/aggregate_queries.sql`
+- **Complex Queries**: `queries/04_query_optimization/complex_queries.sql`
+- **Transactions**: `transactions/transaction_examples.sql`
+- **Performance**: `performance/query_analysis.sql`
+
+## 🛠 Docker Commands
+
 ```bash
-psql postgres -f schema/00_create_database.sql
+# Start containers
+docker-compose up -d
+
+# Stop containers (keeps data)
+docker-compose stop
+
+# Stop and remove containers (keeps data)
+docker-compose down
+
+# Remove everything including data (fresh start)
+docker-compose down -v
+
+# View logs
+docker-compose logs -f postgres
+
+# Check status
+docker-compose ps
 ```
 
-### 3. Initialize Schema
+## 🔄 Reset Database
+
+To start fresh with a clean database:
+
 ```bash
-psql ecommerce_analytics -f schema/01_create_tables.sql
-psql ecommerce_analytics -f schema/02_create_indexes.sql
-psql ecommerce_analytics -f schema/03_create_views.sql
-psql ecommerce_analytics -f schema/04_create_functions.sql
+docker-compose down -v
+docker-compose up -d
 ```
 
-### 4. Load Sample Data
-```bash
-psql ecommerce_analytics -f data/insert_sample_data.sql
-```
+Wait ~30 seconds for reinitialization.
 
-### 5. Run Example Queries
-```bash
-# Navigate to any query folder and execute
-psql ecommerce_analytics -f queries/01_data_selection/basic_queries.sql
-```
+## 📖 Documentation
 
-## Usage Examples
+- **[documentation/er_diagram.md](./documentation/er_diagram.md)** - Database ER diagram
+- **[documentation/data_dictionary.md](./documentation/data_dictionary.md)** - Complete data dictionary
+- **[documentation/schema_overview.md](./documentation/schema_overview.md)** - Architecture overview
 
-### Connect to Database
-```bash
-psql ecommerce_analytics
-```
+## 🎯 Key Features
 
-### Run Performance Analysis
-```bash
-psql ecommerce_analytics -f performance/query_analysis.sql
-```
+- ✅ **Normalized database design** (3NF) with proper relationships
+- ✅ **60+ indexes** for optimal query performance
+- ✅ **Complex queries** with joins, subqueries, and CTEs
+- ✅ **Transaction management** ensuring data consistency
+- ✅ **Performance optimization** with indexes and query tuning
+- ✅ **Analytics capabilities** with window functions and aggregations
+- ✅ **Data integrity** with constraints and triggers
+- ✅ **Comprehensive documentation** with diagrams and data dictionary
+- ✅ **Docker containerized** - runs anywhere, no PostgreSQL installation needed
+- ✅ **pgAdmin included** - web-based database management interface
 
-### Test Transactions
-```bash
-psql ecommerce_analytics -f transactions/transaction_examples.sql
-```
+## 💡 For Performance Evaluation
 
-## Key Features Demonstrated
+This project demonstrates all required database storage competencies:
 
-- **Normalized database design** (3NF) with proper relationships
-- **Complex queries** with joins, subqueries, and CTEs
-- **Transaction management** ensuring data consistency
-- **Performance optimization** with indexes and query tuning
-- **Analytics capabilities** with window functions and aggregations
-- **Data integrity** with constraints and triggers
-- **Comprehensive documentation** with diagrams and data dictionary
+| Competency | Location |
+|------------|----------|
+| Selects data using query language | `queries/01_data_selection/` |
+| Creates and modifies database objects | `schema/`, `queries/02_database_objects/` |
+| Orders and groups data | `queries/03_ordering_grouping/` |
+| Combines queries to optimize | `queries/04_query_optimization/` |
+| Implements database structure | `schema/02_create_tables.sql` |
+| Wraps queries in transactions | `transactions/` |
+| Applies optimization techniques | `optimizations/` |
+| Documents database | `documentation/` |
+| Optimizes query performance | `performance/` |
 
-## Technologies Used
-- PostgreSQL 15+
+## 🔧 Technologies Used
+
+- PostgreSQL 15
+- Docker & Docker Compose
+- pgAdmin 4
 - SQL (DDL, DML, DCL, TCL)
-- Database design patterns
-- Performance analysis tools
-
-## Learning Outcomes
-This project demonstrates proficiency in:
-- Database design and normalization
-- Complex SQL query writing
-- Performance optimization techniques
-- Transaction management
-- Database documentation
-- Query analysis and optimization
 
 ---
+
 **Created for Performance Evaluation - Data Storage Competency**
-
-

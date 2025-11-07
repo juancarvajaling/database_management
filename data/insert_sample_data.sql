@@ -162,7 +162,7 @@ INSERT INTO order_items (order_id, product_id, quantity, unit_price, discount_pe
 -- Order 3
 (3, 7, 2, 29.99, 0, 59.98),
 (3, 15, 2, 14.99, 0, 29.98),
-(3, 19, 1, 49.99, 50, 24.995),
+(3, 19, 1, 49.99, 50, 25.00),
 -- Order 4
 (4, 11, 1, 1299.00, 0, 1299.00),
 -- Order 5
@@ -171,7 +171,7 @@ INSERT INTO order_items (order_id, product_id, quantity, unit_price, discount_pe
 (5, 13, 1, 89.99, 0, 89.99),
 -- Order 6
 (6, 17, 1, 24.99, 0, 24.99),
-(6, 18, 1, 19.99, 25, 14.9925),
+(6, 18, 1, 19.99, 25, 14.99),
 -- Order 7
 (7, 1, 1, 2499.00, 0, 2499.00),
 (7, 4, 1, 1199.00, 0, 1199.00),

@@ -1,23 +1,9 @@
 -- ============================================================================
--- Database Creation Script
+-- Database Setup for Docker
 -- ============================================================================
--- Competency: Creates and modifies database objects
--- Description: Creates the main database for the e-commerce analytics platform
+-- This runs after Docker creates the ecommerce_analytics database
+-- Sets up schemas and extensions
 -- ============================================================================
-
--- Drop database if exists (for development/testing)
-DROP DATABASE IF EXISTS ecommerce_analytics;
-
--- Create database with proper encoding
-CREATE DATABASE ecommerce_analytics
-    WITH 
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'en_US.UTF-8'
-    LC_CTYPE = 'en_US.UTF-8'
-    TEMPLATE = template0;
-
--- Connect to the database
-\c ecommerce_analytics;
 
 -- Create schema for organizing database objects
 CREATE SCHEMA IF NOT EXISTS analytics;

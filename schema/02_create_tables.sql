@@ -150,7 +150,7 @@ CREATE TABLE order_items (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(product_id),
-    CONSTRAINT valid_line_total CHECK (line_total = quantity * unit_price * (1 - discount_percent / 100))
+    CONSTRAINT valid_line_total CHECK (line_total = ROUND(quantity * unit_price * (1 - discount_percent / 100), 2))
 );
 
 COMMENT ON TABLE order_items IS 'Individual items within each order with pricing details';
