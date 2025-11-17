@@ -70,9 +70,12 @@ This project demonstrates comprehensive database management skills through a rea
 ```
 data_storages/
 ├── README.md                          # This file
-├── DOCKER_SETUP.md                    # Docker setup guide
+├── SHOWCASE.md                        # Competency demonstrations
 ├── docker-compose.yml                 # Docker orchestration
 ├── Dockerfile                         # PostgreSQL container definition
+├── docker/                            # Docker configuration
+│   ├── postgresql.conf               # PostgreSQL settings
+│   └── pgadmin-servers.json          # pgAdmin pre-configuration
 ├── schema/                            # Database schema
 │   ├── 01_setup_database.sql         # Database, schemas, and extensions
 │   ├── 02_create_tables.sql          # Table definitions
@@ -91,12 +94,13 @@ data_storages/
 ├── optimizations/
 │   ├── indexing_strategy.sql         # Indexing techniques
 │   ├── partitioning.sql              # Table partitioning
-│   └── create_materialized_views.sql # Materialized views
+│   └── materialized_views.sql        # Materialized views
 ├── performance/
 │   ├── query_analysis.sql            # EXPLAIN examples
 │   └── optimization_comparisons.sql  # Before/after optimization
 └── documentation/
     ├── er_diagram.md                 # ER diagram and relationships
+    ├── erd.png                       # ER diagram image
     ├── data_dictionary.md            # Complete data dictionary
     └── schema_overview.md            # Architecture documentation
 ```
@@ -235,10 +239,9 @@ Wait ~30 seconds for reinitialization.
 
 ## 📖 Documentation
 
-- **[EVALUATION_SHOWCASE.md](./EVALUATION_SHOWCASE.md)** - Complete guide for performance evaluation demo
-- **[DEMO_QUICK_REFERENCE.md](./DEMO_QUICK_REFERENCE.md)** - Quick reference card for demo
-- **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** - Detailed setup instructions
+- **[SHOWCASE.md](./SHOWCASE.md)** - Competency demonstrations with code examples
 - **[documentation/er_diagram.md](./documentation/er_diagram.md)** - Database ER diagram
+- **[documentation/erd.png](./documentation/erd.png)** - ER diagram image
 - **[documentation/data_dictionary.md](./documentation/data_dictionary.md)** - Complete data dictionary
 - **[documentation/schema_overview.md](./documentation/schema_overview.md)** - Architecture overview
 
@@ -255,33 +258,6 @@ Wait ~30 seconds for reinitialization.
 - ✅ **Docker containerized** - runs anywhere, no PostgreSQL installation needed
 - ✅ **pgAdmin included** - web-based database management interface
 
-## 💡 For Performance Evaluation
-
-This project demonstrates all required database storage competencies:
-
-| Competency | Location |
-|------------|----------|
-| Selects data using query language | `queries/01_data_selection/` |
-| Creates and modifies database objects | `schema/`, `queries/02_database_objects/` |
-| Orders and groups data | `queries/03_ordering_grouping/` |
-| Combines queries to optimize | `queries/04_query_optimization/` |
-| Implements database structure | `schema/02_create_tables.sql` |
-| Wraps queries in transactions | `transactions/` |
-| Applies optimization techniques | `optimizations/` |
-| Documents database | `documentation/` |
-| Optimizes query performance | `performance/` |
-
-### 🎬 Ready to Present?
-
-See **[EVALUATION_SHOWCASE.md](./EVALUATION_SHOWCASE.md)** for:
-- Complete demo scripts (10-min, 20-min, 45-min formats)
-- Step-by-step presentation guide
-- Sample queries to demonstrate each competency
-- Expected questions and answers
-- Pre-demo checklist
-
-Print **[DEMO_QUICK_REFERENCE.md](./DEMO_QUICK_REFERENCE.md)** for a handy reference card during your presentation!
-
 ## 🔧 Technologies Used
 
 - PostgreSQL 15
@@ -290,5 +266,3 @@ Print **[DEMO_QUICK_REFERENCE.md](./DEMO_QUICK_REFERENCE.md)** for a handy refer
 - SQL (DDL, DML, DCL, TCL)
 
 ---
-
-**Created for Performance Evaluation - Data Storage Competency**
