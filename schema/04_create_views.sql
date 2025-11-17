@@ -1,8 +1,6 @@
 -- ============================================================================
 -- View Creation Script
 -- ============================================================================
--- Competency: Creates and modifies database objects
--- Competency: Combines multiple queries to optimise query execution
 -- Description: Creates views to simplify complex queries and improve performance
 -- ============================================================================
 

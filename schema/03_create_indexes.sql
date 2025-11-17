@@ -1,8 +1,6 @@
 -- ============================================================================
 -- Index Creation Script
 -- ============================================================================
--- Competency: Applies technics for database optimisation
--- Competency: Creates and modifies database objects
 -- Description: Creates indexes to optimize query performance
 -- ============================================================================
 

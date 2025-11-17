@@ -1,8 +1,6 @@
 -- ============================================================================
 -- Functions and Stored Procedures Creation Script
 -- ============================================================================
--- Competency: Creates and modifies database objects
--- Competency: Wraps queries into transactions to ensure data consistency and integrity
 -- Description: Creates functions, stored procedures, and triggers
 -- ============================================================================
 

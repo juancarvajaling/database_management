@@ -1,8 +1,6 @@
 -- ============================================================================
 -- Table Creation Script
 -- ============================================================================
--- Competency: Creates and modifies database objects
--- Competency: Implements and modifies database structure
 -- Description: Creates normalized tables with proper constraints and relationships
 -- ============================================================================
 

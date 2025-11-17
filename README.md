@@ -235,6 +235,9 @@ Wait ~30 seconds for reinitialization.
 
 ## 📖 Documentation
 
+- **[EVALUATION_SHOWCASE.md](./EVALUATION_SHOWCASE.md)** - Complete guide for performance evaluation demo
+- **[DEMO_QUICK_REFERENCE.md](./DEMO_QUICK_REFERENCE.md)** - Quick reference card for demo
+- **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** - Detailed setup instructions
 - **[documentation/er_diagram.md](./documentation/er_diagram.md)** - Database ER diagram
 - **[documentation/data_dictionary.md](./documentation/data_dictionary.md)** - Complete data dictionary
 - **[documentation/schema_overview.md](./documentation/schema_overview.md)** - Architecture overview
@@ -267,6 +270,17 @@ This project demonstrates all required database storage competencies:
 | Applies optimization techniques | `optimizations/` |
 | Documents database | `documentation/` |
 | Optimizes query performance | `performance/` |
+
+### 🎬 Ready to Present?
+
+See **[EVALUATION_SHOWCASE.md](./EVALUATION_SHOWCASE.md)** for:
+- Complete demo scripts (10-min, 20-min, 45-min formats)
+- Step-by-step presentation guide
+- Sample queries to demonstrate each competency
+- Expected questions and answers
+- Pre-demo checklist
+
+Print **[DEMO_QUICK_REFERENCE.md](./DEMO_QUICK_REFERENCE.md)** for a handy reference card during your presentation!
 
 ## 🔧 Technologies Used
 
