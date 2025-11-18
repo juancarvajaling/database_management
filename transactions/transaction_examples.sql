@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Transaction Management Examples
 -- ============================================================================
--- Competency: Wraps queries into transactions to ensure data consistency and integrity
 -- Description: Demonstrates ACID properties, transaction control, and isolation levels
 -- ============================================================================
 

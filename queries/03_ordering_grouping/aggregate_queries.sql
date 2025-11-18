@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Ordering and Grouping Queries
 -- ============================================================================
--- Competency: Orders and groups data from a database using query language
 -- Description: Demonstrates ORDER BY, GROUP BY, HAVING, and aggregate functions
 -- ============================================================================
 

@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Query Performance Analysis and Optimization
 -- ============================================================================
--- Competency: Optimises query performance using query techniques and methodologies
 -- Description: Demonstrates EXPLAIN, EXPLAIN ANALYZE, and query optimization techniques
 -- ============================================================================
 

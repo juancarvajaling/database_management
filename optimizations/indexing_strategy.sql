@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Indexing Strategy and Optimization
 -- ============================================================================
--- Competency: Applies technics for database optimisation
 -- Description: Demonstrates index types, strategies, and performance impact
 -- ============================================================================
 

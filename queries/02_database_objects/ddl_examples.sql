@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Database Object Modification Examples
 -- ============================================================================
--- Competency: Creates and modifies database objects
 -- Description: Demonstrates CREATE, ALTER, DROP for various database objects
 -- ============================================================================
 

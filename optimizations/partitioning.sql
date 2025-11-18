@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Table Partitioning for Performance Optimization
 -- ============================================================================
--- Competency: Applies technics for database optimisation
 -- Description: Demonstrates table partitioning strategies for large datasets
 -- ============================================================================
 

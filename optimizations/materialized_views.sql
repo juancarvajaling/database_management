@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Materialized Views for Performance Optimization
 -- ============================================================================
--- Competency: Applies technics for database optimisation
 -- Description: Demonstrates materialized views for caching complex query results
 -- ============================================================================
 

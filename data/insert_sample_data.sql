@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Sample Data Insertion Script
 -- ============================================================================
--- Competency: Selects data from a database using query language
 -- Description: Populates database with realistic sample data for testing
 -- ============================================================================
 

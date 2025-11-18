@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Data Selection Queries
 -- ============================================================================
--- Competency: Selects data from a database using query language
 -- Description: Demonstrates various SELECT statement techniques
 -- ============================================================================
 

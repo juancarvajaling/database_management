@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Complex Query Optimization Examples
 -- ============================================================================
--- Competency: Combines multiple queries to optimise query execution
 -- Description: Demonstrates JOINs, subqueries, CTEs, and query optimization techniques
 -- ============================================================================
 

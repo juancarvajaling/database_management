@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Query Optimization - Before/After Comparisons
 -- ============================================================================
--- Competency: Optimises query performance using query techniques and methodologies
 -- Description: Side-by-side comparison of query optimization techniques
 -- ============================================================================
 
