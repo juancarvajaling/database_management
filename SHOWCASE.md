@@ -114,7 +114,76 @@ See [02_create_tables.sql](/schema/02_create_tables.sql)
 
 ## Wraps queries into transactions to ensure data consistency and integrity
 
-See [05_create_functions.sql](/schema/05_create_functions.sql)
+```sql
+BEGIN;
+
+-- Create a new order
+INSERT INTO orders (customer_id, shipping_address_id, billing_address_id, order_status, payment_status, payment_method, subtotal, tax_amount, shipping_cost, discount_amount, total_amount)
+VALUES (1, 1, 2, 'PENDING', 'PENDING', 'CREDIT_CARD', 100.00, 8.75, 0.00, 0.00, 108.75);
+
+-- Get the order ID
+SELECT currval('orders_order_id_seq') as new_order_id;
+
+-- Add order items
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, discount_percent, line_total)
+VALUES 
+    (currval('orders_order_id_seq'), 7, 2, 29.99, 0, 59.98),
+    (currval('orders_order_id_seq'), 15, 2, 14.99, 0, 29.98);
+
+-- Verify the data
+SELECT * FROM orders WHERE order_id = currval('orders_order_id_seq');
+SELECT * FROM order_items WHERE order_id = currval('orders_order_id_seq');
+
+COMMIT;
+```
+
+```sql
+-- Transaction with rollback
+BEGIN;
+
+-- Attempt to create an order with invalid data
+INSERT INTO customers (email, first_name, last_name, customer_tier)
+VALUES ('test@test.com', 'Test', 'User', 'BRONZE');
+
+-- Get customer ID
+SELECT currval('customers_customer_id_seq') as test_customer_id;
+
+ROLLBACK;
+```
+
+```sql
+BEGIN;
+
+-- Update customer tiers based on spending
+UPDATE customers c
+SET customer_tier = 
+    CASE 
+        WHEN order_totals.total >= 10000 THEN 'PLATINUM'
+        WHEN order_totals.total >= 5000 THEN 'GOLD'
+        WHEN order_totals.total >= 1000 THEN 'SILVER'
+        ELSE 'BRONZE'
+    END
+FROM (
+    SELECT 
+        customer_id,
+        SUM(total_amount) as total
+    FROM orders
+    WHERE order_status NOT IN ('CANCELLED', 'REFUNDED')
+    GROUP BY customer_id
+) as order_totals
+WHERE c.customer_id = order_totals.customer_id;
+
+-- Log the tier updates
+INSERT INTO audit_log (table_name, record_id, action, new_values)
+SELECT 
+    'customers',
+    customer_id,
+    'TIER_UPDATE',
+    json_build_object('new_tier', customer_tier)::jsonb
+FROM customers;
+
+ROLLBACK;
+```
 
 ## Applies technics for database optimisation
 
@@ -210,10 +279,3 @@ See [documentation](/documentation/) folder.
     WHERE order_status NOT IN ('CANCELLED', 'REFUNDED')
         AND order_date > '2024-01-01';
     ```
-
-
-
-## To implement
-
-- Implements database techniques to safeguard sensitive data
-- Uses stored procedures to enhance database operations, security, and performance

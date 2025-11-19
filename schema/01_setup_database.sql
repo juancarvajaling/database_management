@@ -5,14 +5,6 @@
 -- Sets up schemas and extensions
 -- ============================================================================
 
--- Create schema for organizing database objects
-CREATE SCHEMA IF NOT EXISTS analytics;
-CREATE SCHEMA IF NOT EXISTS sales;
-CREATE SCHEMA IF NOT EXISTS inventory;
-
--- Set search path
-SET search_path TO public, analytics, sales, inventory;
-
 -- Create extension for UUID generation
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
